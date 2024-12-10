@@ -1,17 +1,29 @@
-import Button from '@mui/material/Button';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import ViewMode from "./pages/ViewMode";
+import Settings from "./pages/Settings";
+import { AppBar, Toolbar, Button } from "@mui/material";
 
 function App() {
   return (
     <>
-    <Button variant="contained">Test Button</Button>
-    <Stack >
-      <Pagination count={10} color="primary" />
-    </Stack>
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" component={Link} to="/">
+              View Mode
+            </Button>
+            <Button color="inherit" component={Link} to="/settings">
+              Settings
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Routes>
+            <Route path="/" element={<ViewMode />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+      </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
