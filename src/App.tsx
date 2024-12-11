@@ -6,16 +6,14 @@ import Settings from "./pages/Settings";
 import ROTES from "./rotes";
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path={ROTES.VIEW_MODE} element={<Layout />}>
-            <Route index element={<ViewMode />} />
-            <Route path={ROTES.SETTINGS} element={<Settings />} />
-          </Route>
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route path={ROTES.VIEW_MODE} element={<Layout />}>
+          <Route index element={<ViewMode />} />
+          <Route path={ROTES.SETTINGS} element={<Settings />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
