@@ -1,6 +1,6 @@
 const ROTES = {
    VIEW_MODE: "/",
-   SETTINGS: '/settings'
+   SETTINGS: "/settings"
 }
 
 export default ROTES
