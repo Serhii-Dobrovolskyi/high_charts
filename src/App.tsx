@@ -1,26 +1,19 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Layout from "./components/Layout";
 import ViewMode from "./pages/ViewMode";
 import Settings from "./pages/Settings";
-import { AppBar, Toolbar, Button } from "@mui/material";
-
+import ROTES from "./rotes";
 function App() {
   return (
     <>
       <Router>
-        <AppBar position="static">
-          <Toolbar>
-            <Button color="inherit" component={Link} to="/">
-              View Mode
-            </Button>
-            <Button color="inherit" component={Link} to="/settings">
-              Settings
-            </Button>
-          </Toolbar>
-        </AppBar>
         <Routes>
-            <Route path="/" element={<ViewMode />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
+          <Route path={ROTES.VIEW_MODE} element={<Layout />}>
+            <Route index element={<ViewMode />} />
+            <Route path={ROTES.SETTINGS} element={<Settings />} />
+          </Route>
+        </Routes>
       </Router>
     </>
   );
