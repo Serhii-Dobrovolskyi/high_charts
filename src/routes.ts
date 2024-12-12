@@ -1,6 +1,6 @@
-const ROTES = {
+const ROUTES = {
    VIEW_MODE: "/",
    SETTINGS: "/settings"
 }
 
-export default ROTES
+export default ROUTES
