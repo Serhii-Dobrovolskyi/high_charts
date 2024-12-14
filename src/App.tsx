@@ -14,6 +14,7 @@ function App() {
           <Route path={ROUTES.SETTINGS} element={<Settings />} />
         </Route>
       </Routes>
+
     </Router>
   );
 }
