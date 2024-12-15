@@ -23,44 +23,25 @@ const HighchartsComponent: React.FC = () => {
     const fetchTest = async () => {
       try {
         const response = await fetch(
-          `https://api.coindesk.com/v1/bpi/historical/close.json?start=${start}&end=${end}`,
-          {
-            cache: "no-cache",
-            headers: { "cache-control": "no-cache" },
-          }
+          `https://archive-api.open-meteo.com/v1/archive?latitude=52.52&longitude=13.41&start_date=${start}&end_date=${end}&daily=temperature_2m_max`
         );
         const json = await response.json();
+        console.log(json)
         setData({
-          keys: Object.keys(json.bpi),
-          values: Object.values(json.bpi),
+          keys: json.daily.time,
+          values: json.daily.temperature_2m_max,
         });
-        console.log(json);
+        console.log(data)
       } catch (err) {
         console.log(err);
       }
     };
     fetchTest();
   };
+  useEffect(() => {
+    console.log("Data updated:", data);
+  }, [data]);
 
-  // useEffect(() => {
-  //   const fetchTest = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://api.coindesk.com/v1/bpi/historical/close.json?start=2024-10-12&end=2024-10-19"
-  //       );
-  //       const json = await response.json();
-  //       setData({
-  //         keys: Object.keys(json.bpi),
-  //         values: Object.values(json.bpi),
-  //       });
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   fetchTest();
-  // }, []);
-
-  // const [data, setData] = useState({ keys: [], values: [] });
   const seriesOption: SeriesOptionsType = {
     name: "Продажи",
     data: data.values,
@@ -85,9 +66,6 @@ const HighchartsComponent: React.FC = () => {
   };
 
   return (
-    // <div>
-    //   <HighchartsReact highcharts={Highcharts} options={options} />
-    // </div>
     <>
       <div style={{ padding: "20px" }}>
         <h1>Выберите даты для данных о ценах на биткоин</h1>
@@ -111,12 +89,6 @@ const HighchartsComponent: React.FC = () => {
         </div>
         <button onClick={handleFetchData}>Получить</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {data && (
-          <div>
-            <h2>Результаты:</h2>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-          </div>
-        )}
       </div>
       <div>
         <HighchartsReact highcharts={Highcharts} options={options} />
