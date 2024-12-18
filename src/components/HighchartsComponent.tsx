@@ -24,15 +24,7 @@ const HighchartsComponent: React.FC = () => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        padding: 3,
-        background:
-          "linear-gradient(to right,rgb(155, 173, 207),rgb(8, 20, 46))", // Градиент фона
-        minHeight: "100vh", // Заполняет весь экран
-        color: "#fff",
-      }}
-    >
+    <Box>
       <Typography variant="h4" gutterBottom>
         Select dates for the chart
       </Typography>
@@ -47,7 +39,7 @@ const HighchartsComponent: React.FC = () => {
         variant="contained"
         onClick={handleFetchData}
         disabled={isLoading || !startDate || !endDate}
-        sx={{ mt: 2 }}
+        sx={{ m: 2, padding: "8px 34px" }}
       >
         {isLoading ? "Loading..." : "Get"}
       </Button>

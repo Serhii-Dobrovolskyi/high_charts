@@ -17,9 +17,9 @@ const CreateChart = ({ onSubmit }: TCreateChartProps) => {
     <>
       <Button
         variant="contained"
-        color="primary"
+        color="success"
         onClick={onOpen}
-        sx={{ marginBottom: 2 }}
+        sx={{ m: 2 }}
       >
         Add New Chart
       </Button>

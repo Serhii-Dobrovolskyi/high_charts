@@ -29,7 +29,25 @@ import { TChart } from "../types/chart";
 
 export const ChartsProvider = ({ children }: TChartsProviderProps) => {
   const [charts, setCharts] = useState<TChart[]>(
-    JSON.parse(localStorage.getItem("charts") || "[]")
+    JSON.parse(
+      localStorage.getItem("charts") ||
+        `${JSON.stringify([
+          {
+            id: Date.now() + Math.random(),
+            type: "area",
+            name: "Maximum Temperature (example)",
+            color: "#DC143C",
+            dataType: "temperature_2m_max",
+          },
+          {
+            id: Date.now() + Math.random(),
+            type: "line",
+            name: "Mean temperature (example)",
+            color: "#4169E1",
+            dataType: "temperature_2m_mean",
+          },
+        ])}`
+    )
   );
   const [startDate, setStartDate] = useState<Date | null>(
     subDays(new Date(), 7)
