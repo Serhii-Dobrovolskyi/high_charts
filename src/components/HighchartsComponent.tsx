@@ -1,99 +1,90 @@
-import Highcharts, { SeriesOptionsType } from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { useFetchChartData } from "../hooks/useFetchChartData";
+import DateRangePicker from "./DateRangePicker";
+import Chart from "./Chart";
+import NAMES_OF_CHARTS from "../constants/namesOfCharts";
+import { ChartsContext } from "../context/chartsContext";
+import { TChartType } from "../components/Chart";
 
 const HighchartsComponent: React.FC = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null); // Начальная дата
-  const [endDate, setEndDate] = useState<Date | null>(null); // Конечная дата
-  const [data, setData] = useState({ keys: [], values: [] }); // Данные из API
-  const [error, setError] = useState<string | null>(null); // Ошибка, если запрос не удался
-
-  const handleFetchData = async () => {
-    if (!startDate || !endDate) {
-      setError("Пожалуйста, выберите обе даты.");
-      return;
+  const { data, error, isLoading, fetchChartData } = useFetchChartData();
+  const { charts, startDate, endDate, setStartDate, setEndDate } =
+    useContext(ChartsContext);
+  const handleFetchData = () => {
+    if (startDate && endDate) {
+      fetchChartData(startDate, endDate);
     }
-    const start = startDate.toISOString().split("T")[0]; // Формат YYYY-MM-DD
-    const end = endDate.toISOString().split("T")[0];
-    console.log(start, end);
-    const fetchTest = async () => {
-      try {
-        const response = await fetch(
-          `https://archive-api.open-meteo.com/v1/archive?latitude=52.52&longitude=13.41&start_date=${start}&end_date=${end}&daily=temperature_2m_max`
-        );
-        const json = await response.json();
-        console.log(json)
-        setData({
-          keys: json.daily.time,
-          values: json.daily.temperature_2m_max,
-        });
-        console.log(data)
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchTest();
   };
-  useEffect(() => {
-    console.log("Data updated:", data);
-  }, [data]);
 
-  const seriesOption: SeriesOptionsType = {
-    name: "Продажи",
-    data: data.values,
-    type: "line",
-  };
-  const options: Highcharts.Options = {
-    chart: {
-      type: "line",
-    },
-    title: {
-      text: "Динамический график",
-    },
-    xAxis: {
-      categories: data.keys,
-    },
-    yAxis: {
-      title: {
-        text: "Значение",
-      },
-    },
-    series: [seriesOption],
-  };
+  useEffect(() => {
+    if (!startDate || !endDate) return;
+    fetchChartData(startDate, endDate);
+  }, []);
 
   return (
-    <>
-      <div style={{ padding: "20px" }}>
-        <h1>Выберите даты для данных о ценах на биткоин</h1>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Начальная дата: </label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            dateFormat="yyyy-MM-dd"
-            placeholderText="Выберите начальную дату"
-          />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Конечная дата: </label>
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            dateFormat="yyyy-MM-dd"
-            placeholderText="Выберите конечную дату"
-          />
-        </div>
-        <button onClick={handleFetchData}>Получить</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </div>
-      <div>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </div>
-    </>
+    <Box
+      sx={{
+        padding: 3,
+        background:
+          "linear-gradient(to right,rgb(155, 173, 207),rgb(8, 20, 46))", // Градиент фона
+        minHeight: "100vh", // Заполняет весь экран
+        color: "#fff",
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Select dates for the chart
+      </Typography>
+      <DateRangePicker
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        isDisabled={!charts.length}
+      />
+      <Button
+        variant="contained"
+        onClick={handleFetchData}
+        disabled={isLoading || !startDate || !endDate}
+        sx={{ mt: 2 }}
+      >
+        {isLoading ? "Loading..." : "Get"}
+      </Button>
+      {error && (
+        <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+          {error}
+        </Typography>
+      )}
+      <Grid container spacing={2}>
+        {!!Object.keys(data).length &&
+          charts.map((chart, index) => (
+            <Grid
+              size={{ sm: 12, md: 6 }}
+              key={index}
+              sx={{
+                background: "#fff",
+                color: "#000",
+                padding: 2,
+                borderRadius: 2,
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                "&:hover": {
+                  boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.5)",
+                },
+              }}
+            >
+              <Box>
+                <Chart
+                  data={data[chart.dataType]}
+                  name={chart.name}
+                  type={chart.type as TChartType}
+                  color={chart.color}
+                />
+              </Box>
+            </Grid>
+          ))}
+      </Grid>
+    </Box>
   );
 };
 
