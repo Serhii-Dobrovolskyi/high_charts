@@ -1,50 +1,66 @@
-# React + TypeScript + Vite
+# Review System for TalentHive
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+In this project, I implemented an initial prototype of a review system, for the TalentHive platform.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Registered users can leave reviews about services. Each review consists of service selection, rating, comment and date of submission.
+! Given that the user is already registered, he does not need to enter his name in the form, and the name comes from the server.
+The system fits seamlessly into the design of the platform and utilizes React.js along with Material-UI (MUI) to create a clean and responsive user interface.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Design Choices
 
-- Configure the top-level `parserOptions` property like this:
+### **Alignment with TalentHive's Style**
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+The design meets the core criteria of the TalentHive platform:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Font**: Fonts such as `Ubuntu` and `Inter` were used to maintain consistency with the platform.
+- **Color Palette**: Gold and neutral tones align with the website's branding.
+- **Layout**: The components are designed with Material-UI, as the site also uses this library.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Technical Approach
+
+### 1. **Frontend**
+
+- **React.js**: The application is modular, with components for:
+  - `ReviewForm`: Handles input and submission of reviews.
+  - `ReviewList`: Displays submitted reviews in an organized card layout.
+- **Material-UI (MUI)**: Provides a modern and customizable design framework.
+
+### 2. **Backend integration**
+
+- **Server Setup:**: Created an index.js file in the server folder where the main server code is configured using `Express.js`.
+- **Connecting middleware:** `cors` Created Allows the server to process incoming data in JSON format.
+- **Adding temporary authentication:** Created an auth object representing an authorized user (in this case with fixed id and name) to bind the username to reviews.
+- **Implementation of CRUD API:** GET, POST, DELETE, PATCH.
+
+### 3. **Validation**
+
+- Required fields (service selection, rating, and comment) are enforced to ensure data completeness.
+- Visual cues (e.g., error prompts) are provided for any missing fields.
+
+---
+
+## How to Run
+For convenience in the project, I also used the approach - Monorepo.
+
+
+Now we can start the server part in the `server` folder and the client part in the `client` folder with one command from the parent folder `review_system`.
+
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Install dependencies for both (server and client) `npm run installAll`.
+3. Start project with `npm run dev` from the parent folder `review_system` .
+4. The app will be available at `http://localhost:5173/`.
+
+---
+
+---
+
+## Conclusion
+
+This project demonstrates a simple, scalable, and usable prototype of a review system that matches the design and goals of the TalentHive platform. By utilizing React.js + TypeScipt and Material-UI, the application remains flexible for future improvements.

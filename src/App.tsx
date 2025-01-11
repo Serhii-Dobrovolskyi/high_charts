@@ -6,7 +6,7 @@ import ROUTES from "./constants/routes";
 import Settings from "./pages/Settings";
 import { ChartsProvider } from "./context/chartsContext";
 
-function App() {
+function App() {  
   return (
     <ChartsProvider>
       <Router>

@@ -33,8 +33,12 @@ const ChartModal: React.FC<TChartModalProps> = ({
     onClose();
   };
 
+  const handleClose = () => {
+    onClose();
+    setFormData({ name: "", color: "", type: "", dataType: "" });
+  };
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={handleClose} >
       <Box
         sx={{
           position: "absolute",

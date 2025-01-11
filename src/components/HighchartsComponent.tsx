@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid2";
 import { useFetchChartData } from "../hooks/useFetchChartData";
 import DateRangePicker from "./DateRangePicker";
 import Chart from "./Chart";
-import NAMES_OF_CHARTS from "../constants/namesOfCharts";
 import { ChartsContext } from "../context/chartsContext";
 import { TChartType } from "../components/Chart";
 

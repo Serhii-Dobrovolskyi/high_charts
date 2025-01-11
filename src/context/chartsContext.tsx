@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from "react";
+import { subDays, endOfDay } from "date-fns";
+import { TChart } from "../types/chart";
 
 type TChartContext = {
   charts: TChart[];
@@ -21,11 +23,10 @@ export const ChartsContext = createContext<TChartContext>({
   setEndDate: () => {},
   setStartDate: () => {},
 });
+
 type TChartsProviderProps = {
   children: React.ReactNode;
 };
-import { subDays, endOfDay } from "date-fns";
-import { TChart } from "../types/chart";
 
 export const ChartsProvider = ({ children }: TChartsProviderProps) => {
   const [charts, setCharts] = useState<TChart[]>(
@@ -49,15 +50,18 @@ export const ChartsProvider = ({ children }: TChartsProviderProps) => {
         ])}`
     )
   );
+
   const [startDate, setStartDate] = useState<Date | null>(
     subDays(new Date(), 7)
   );
   const [endDate, setEndDate] = useState<Date | null>(endOfDay(new Date()));
+
   const deleteChart = (chartId: number) => {
     setCharts((prevCharts) =>
       prevCharts.filter((chart) => chart.id !== chartId)
     );
   };
+
   const editChart = (id: number, updatedChart: Partial<TChart>) => {
     setCharts((prevCharts) =>
       prevCharts.map((chart) =>
