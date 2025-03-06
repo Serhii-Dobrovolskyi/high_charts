@@ -17,7 +17,7 @@ const Chart: React.FC<TChartProps> = ({ data, name, color, type }) => {
     title: {
       text: name,
     },
-    Axxis: {
+    xAxis: {
       categories: data.keys,
     },
     yAxis: {
